@@ -73,12 +73,12 @@
         
         .logo-text {
             font-family: 'Open Sans', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2.1rem;
+            font-weight: 500;
             background: linear-gradient(90deg, #F97316 0%, #3B82F6 100%);
             -webkit-background-clip: text;
             background-clip: text;
-            color: #F97316; /* Fallback for PDF */
+            color: #000000; /* Fallback for PDF */
             display: inline-block;
             vertical-align: middle;
             letter-spacing: -0.05em;
@@ -315,7 +315,8 @@
             <!-- HEADER (First page only) -->
             <div class="logo-container">
                 <span class="logo-text">
-                    <span style="color: #F97316; font-size: 1.8rem;">◆</span> GoClarifi
+                    <img src="cri-logo.png" width="45" height="37" alt="Go Clarifi" title="Go Clarifi" />
+                    GoClarifi
                 </span>
             </div>
             
@@ -325,7 +326,7 @@
                     <td style="vertical-align: top;">
                         <div style="margin-bottom: 13px;">
                             <p class="info-label">DATE OF SUBMISSION</p>
-                            <p class="info-text">{{ generated_date|default("Sep 18, 2025, 19:29 PM") }}</p>
+                            <p class="info-text">{{ policy_report.formatted_date|default("Sep 18, 2025, 19:29 PM") }}</p>
                         </div>
                         <div>
                             <p class="info-label">PROPERTY ADDRESS</p>

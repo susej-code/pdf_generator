@@ -6,6 +6,7 @@ This script can be run independently without Django to test PDF generation and s
 
 import os
 import json
+import glob
 from datetime import datetime
 from jinja2 import Template
 from xhtml2pdf import pisa
@@ -56,8 +57,20 @@ def main():
     data_path = os.path.join(current_dir, 'mock_data.json')
     output_path = os.path.join(current_dir, 'output', 'policy_report.pdf')
     
-    # Create output directory
-    os.makedirs(os.path.join(current_dir, 'output'), exist_ok=True)
+    # Create output directory and clean existing files
+    output_dir = os.path.join(current_dir, 'output')
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Clean existing output files
+    existing_files = glob.glob(os.path.join(output_dir, '*'))
+    if existing_files:
+        print(f"→ Cleaning {len(existing_files)} existing file(s) from output directory...")
+        for file_path in existing_files:
+            try:
+                os.remove(file_path)
+                print(f"  ✓ Removed: {os.path.basename(file_path)}")
+            except OSError as e:
+                print(f"  ✗ Failed to remove {os.path.basename(file_path)}: {e}")
     
     print("=" * 60)
     print("B2C Policy Report PDF Generator")
@@ -79,8 +92,19 @@ def main():
     print(f"→ Loading mock data: {data_path}")
     context = load_mock_data(data_path)
     
-    # Add current date
-    context['generated_date'] = datetime.now()
+    # Format dates properly
+    # Convert policy date from ISO format to desired format
+    if 'policy_report' in context and 'date' in context['policy_report']:
+        date_str = context['policy_report']['date']
+        try:
+            # Parse ISO date and convert to desired format
+            date_obj = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            context['policy_report']['formatted_date'] = date_obj.strftime("%b %d, %Y, %H:%M %p")
+        except ValueError:
+            context['policy_report']['formatted_date'] = "Sep 18, 2025, 19:29 PM"
+    
+    # Add current date in same format
+    context['generated_date'] = datetime.now().strftime("%b %d, %Y, %H:%M %p")
     
     # Generate PDF
     print(f"→ Generating PDF...")
