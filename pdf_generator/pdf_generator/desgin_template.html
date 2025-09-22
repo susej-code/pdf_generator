@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Insurance Policy Report</title>
+    <style>
+        /* --- FONT IMPORTS --- */
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+
+
+        /* --- BASE & DOCUMENT STYLES --- */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #FFFAF7;
+            color: #374151;
+            margin: 0;
+            padding: 2rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        .page-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            position: relative;
+            border: 1px solid #D1D5DB;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        p, div, table, tr, td {
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        
+        /* --- UTILITY & COMPONENT STYLES --- */
+        
+        /* Typography */
+        .font-OpenSans { font-family: 'Open Sans', sans-serif; }
+        .times-new-roman { font-family: 'Times New Roman', Times, serif; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-\[10px\] { font-size: 10px; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .text-bgMenu { color: #111827; }
+        .text-secondary500 { color: #6B7280; }
+        .text-primary700 { color: #D97706; }
+        .text-secondary600 { color: #4B5563; }
+        .text-secondary700 { color: #374151; }
+        .text-secondary800 { color: #1F2937; }
+
+        /* Misc */
+        .rounded-md { border-radius: 0.375rem; }
+        .object-cover { object-fit: cover; }
+        
+        /* Specific Markdown Content Styles */
+        .markdown-content p {
+            font-family: 'Times New Roman', Times, serif;
+            color: #4B5563;
+            line-height: 1.6;
+        }
+        .details-container {
+            margin-top: 1.5rem;
+            overflow: hidden;
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            border-left: 4px solid #F97316;
+            background-color: #fff;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+        .details-container .p-5 { padding: 1.25rem; }
+        .details-container .mb-6 { margin-bottom: 1.5rem; }
+        .details-container h4 { font-size: 1rem; font-weight: 600; color: #1F2937; display: flex; align-items: center; margin-bottom: 0.75rem; }
+        .details-container h4 img, .details-container h4 svg { margin-right: 0.5rem; width: 1.25rem; height: 1.25rem; }
+        .details-container .rounded-lg { border-radius: 0.5rem; }
+        .details-container .border-gray-100 { border: 1px solid #F3F4F6; }
+        .details-container .bg-gray-50 { background-color: #F9FAFB; }
+        .details-container .p-4 { padding: 1rem; }
+        .details-container .leading-relaxed { line-height: 1.625; }
+        .details-container .text-gray-700 { color: #374151; }
+        .details-container .mb-3 { margin-bottom: 0.75rem; }
+        .details-container .text-sm { font-size: 0.875rem; }
+        .details-container .border-gray-200 { border: 1px solid #E5E7EB; }
+        .details-container .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .details-container .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .details-container .border-t { border-top: 1px solid #F3F4F6; }
+        .details-container .pt-5 { padding-top: 1.25rem; }
+        .details-container h5 { font-size: 0.875rem; font-weight: 600; color: #374151; display: flex; align-items: center; margin-bottom: 0.75rem; }
+        .details-container h5 img, .details-container h5 svg { margin-right: 0.5rem; width: 1rem; height: 1rem; }
+        .details-container .border-blue-100 { border: 1px solid #DBEAFE; }
+        .details-container .bg-blue-50 { background-color: #EFF6FF; }
+        .details-container .text-blue-700 { color: #1D4ED8; }
+        .details-container .text-xs { font-size: 0.75rem; }
+        .details-container .border-blue-200 { border: 1px solid #BFDBFE; }
+        .details-container .rounded-full { border-radius: 9999px; }
+        .details-container .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+        
+        /* Print-specific styles */
+        @media print {
+            body { padding: 0; background-color: white; }
+            .page-container { box-shadow: none; border: none; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <div style="position: relative;">
+        <!-- HEADER -->
+        <div style="text-align: center;">
+             <img src="https://policyholder.goclarifi.com/icons/logo.svg" alt="GoClarifi Logo" style="height: 29px; width: 29px; display: inline-block; vertical-align: middle; margin-right: 0.25rem;">
+            <p class="font-OpenSans text-2xl font-bold text-bgMenu" style="display: inline-block; vertical-align: middle;">GoClarifi</p>
+        </div>
+
+        <!-- SUBMISSION & PROPERTY INFO - Using table for xhtml2pdf compatibility -->
+        <table style="width: 100%; margin-top: 2.5rem; padding: 0 2.75rem; border-spacing: 29px 0; border-collapse: separate;">
+            <tr>
+                <td style="vertical-align: top;">
+                    <div style="margin-bottom: 13px;">
+                        <p class="text-[10px] font-bold text-secondary500">DATE OF SUBMISSION</p>
+                         <div style="margin-top: 0.25rem;">
+                            <img src="https://policyholder.goclarifi.com/icons/date-calendar.svg" alt="" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; background-color: #FEF3C7; padding: 5px; border-radius: 0.375rem; margin-right: 0.75rem;">
+                            <p class="text-base font-medium text-primary700" style="display: inline-block; vertical-align: middle;">Sep 18, 2025, 19:29 PM</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-secondary500">PROPERTY ADRESS</p>
+                        <div style="margin-top: 0.25rem;">
+                            <img src="https://policyholder.goclarifi.com/icons/home-value-icon.svg" alt="" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; background-color: #FEF3C7; padding: 5px; border-radius: 0.375rem; margin-right: 0.75rem;">
+                            <p class="text-base font-medium text-primary700" style="display: inline-block; vertical-align: middle;">11502 CECIL SUMMERS WAY HOUSTON, TX 77089</p>
+                        </div>
+                    </div>
+                </td>
+                <td style="vertical-align: top; width: 202px;">
+                    <div>
+                        <img src="https://photos.zillowstatic.com/fp/6945ee57a1890ef282f29fed41e685b6-p_d.jpg" alt="Property Photo" class="rounded-md object-cover" style="max-height: 126px; max-width: 202px;">
+                    </div>
+                    <p class="text-[10px] text-secondary600" style="margin-top: 0.25rem;">11502 CECIL SUMMERS WAY HOUSTON, TX 77089</p>
+                </td>
+            </tr>
+        </table>
+
+        <!-- DIVIDER -->
+        <div style="margin-top: 1.5rem; margin-bottom: 14px; height: 0.9px; width: 100%; background-color: #D1D5DB;"></div>
+
+        <!-- REPORT TITLE -->
+        <p class="text-lg font-bold text-secondary700" style="padding: 1.5rem 1rem 1rem;">Home Insurance Policy Report </p>
+        
+        <!-- WATERMARK -->
+        <div style="position: absolute; bottom: 0; left: 0; z-index: -1;">
+            <img src="https://policyholder.goclarifi.com/icons/insurance-logo.svg" alt="Insurance Watermark" style="height: 283px; width: 283px; opacity: 0.1;">
+        </div>
+
+        <!-- REPORT CONTENT -->
+        <div style="padding: 1.25rem; min-height: 842px;">
+            <!-- Question 1 -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <img src="https://policyholder.goclarifi.com/icons/arrow-left-orange.svg" alt="arrow" style="height: 1rem; width: 1rem; margin-right: 0.5rem;">
+                    <div class="times-new-roman text-lg font-bold text-secondary800">What is the policy effective date of this policy?</div>
+                </div>
+                <div class="markdown-content">
+                    <p>The policy effective date for this homeowners insurance policy is May 28, 2022.</p>
+                    <div class="details-container">
+                        <div class="p-5">
+                            <div class="mb-6">
+                                <h4><svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h2a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" style="color:#F97316"></path></svg>Policy Details</h4>
+                                <div class="rounded-lg border-gray-100 bg-gray-50 p-4">
+                                    <p class="mb-3 leading-relaxed text-gray-700">The policy is effective from May 28, 2022, and covers a period of one year, ending on May 28, 2023.</p>
+                                    <div class="text-sm">
+                                        <span style="width: 7rem; flex-shrink: 0; font-weight: 500;" class="text-gray-700">Reference:</span>
+                                        <div class="rounded-md border-gray-200 bg-white px-3 py-1" style="color: #1F2937; border:1px solid #E5E7EB; background: white; padding: 0.25rem 0.75rem; border-radius: 0.375rem;">Policy Period: May 28, 2022 to May 28, 2023</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t pt-5">
+                                <h5><svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" style="color:#3B82F6"></path></svg>Policy Reference Points</h5>
+                                <div class="rounded-lg border-blue-100 bg-blue-50 p-4">
+                                    <div class="rounded-full border-blue-200 bg-white py-1.5 px-3" style="display: inline-block; border: 1px solid #BFDBFE; background: white; border-radius: 9999px; padding: 0.375rem 0.75rem;"><span class="text-xs font-medium text-blue-700">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <img src="https://policyholder.goclarifi.com/icons/arrow-left-orange.svg" alt="arrow" style="height: 1rem; width: 1rem; margin-right: 0.5rem;">
+                    <div class="times-new-roman text-lg font-bold text-secondary800">Who is the insurance company and their contact information for claims?</div>
+                </div>
+                <div class="markdown-content">
+                    <p>The insurance company for this policy is SureChoice Underwriters Reciprocal Exchange, managed by SageSure. To process a claim, you can contact their 24/7 Claims Department directly at (800) 481-0622 or visit their website at www.MySageSure.com.</p>
+                     <div class="details-container">
+                        <div class="p-5">
+                            <div class="mb-6">
+                                <h4><svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h2a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" style="color:#F97316"></path></svg>Policy Details</h4>
+                                <div class="rounded-lg border-gray-100 bg-gray-50 p-4">
+                                    <p class="mb-3 leading-relaxed text-gray-700">SureChoice Underwriters Reciprocal Exchange provides the coverage, and SageSure manages the insurance policy. Claims can be filed or tracked via their 24/7 hotline or online portal.</p>
+                                    <div class="text-sm">
+                                        <span style="width: 7rem; flex-shrink: 0; font-weight: 500;" class="text-gray-700">Reference:</span>
+                                        <div class="rounded-md border-gray-200 bg-white px-3 py-1" style="color: #1F2937; border:1px solid #E5E7EB; background: white; padding: 0.25rem 0.75rem; border-radius: 0.375rem;">To file or track a claim, please contact SureChoice Underwriters Reciprocal Exchange 's 24/7 Claims Department directly at (800) 481-0622 or visit www.MySageSure.com for information about filing a claim online.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t pt-5">
+                                <h5><svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" style="color:#3B82F6"></path></svg>Policy Reference Points</h5>
+                                <div class="rounded-lg border-blue-100 bg-blue-50 p-4">
+                                     <div class="rounded-full border-blue-200 bg-white py-1.5 px-3" style="display: inline-block; border: 1px solid #BFDBFE; background: white; border-radius: 9999px; padding: 0.375rem 0.75rem;"><span class="text-xs font-medium text-blue-700">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER / PAGE NUMBER -->
+        <div style="text-align: right; margin-right: 1rem;">
+            <p class="font-OpenSans text-sm font-semibold text-secondary600">1</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

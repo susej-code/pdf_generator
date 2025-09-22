@@ -1,0 +1,53 @@
+{
+  "policy_report": {
+    "id": 3,
+    "policy_number": "Not Found",
+    "first_name": "Not Found",
+    "last_name": "Doe",
+    "provider": "Not Found",
+    "premium": "1500.00",
+    "status": "CLARIFIED",
+    "claim_number": "",
+    "is_open_case": true,
+    "home_value_img": "https://photos.zillowstatic.com/fp/6945ee57a1890ef282f29fed41e685b6-p_d.jpg",
+    "home_value_address": "11502 CECIL SUMMERS WAY HOUSTON, TX 77089",
+    "date": "2025-09-19T01:29:50.617356+00:00"
+  },
+  "questions_answers": [
+    {
+      "question": "What is the policy effective date of this policy?",
+      "answer": "The policy effective date for this homeowners insurance policy is May 28, 2022.",
+      "title": "Policy Effective Date",
+      "reference_page": "0",
+      "text_reference": "Policy Period: May 28, 2022 to May 28, 2023",
+      "policy_details": "The policy is effective from May 28, 2022, and covers a period of one year, ending on May 28, 2023.",
+      "policy_reference_points": [
+        "0"
+      ]
+    },
+    {
+      "question": "Who is the insurance company and their contact information for claims?",
+      "answer": "The insurance company for this policy is SureChoice Underwriters Reciprocal Exchange, managed by SageSure. To process a claim, you can contact their 24/7 Claims Department directly at (800) 481-0622 or visit their website at www.MySageSure.com.",
+      "title": "Insurance Company and Contact Information for Claims",
+      "reference_page": "0",
+      "text_reference": "To file or track a claim, please contact SureChoice Underwriters Reciprocal Exchange 's 24/7 Claims Department directly at (800) 481-0622 or visit www.MySageSure.com for information about filing a claim online.",
+      "policy_details": "SureChoice Underwriters Reciprocal Exchange provides the coverage, and SageSure manages the insurance policy. Claims can be filed or tracked via their 24/7 hotline or online portal.",
+      "policy_reference_points": [
+        "0"
+      ]
+    },
+    {
+      "question": "Who is the agent or broker listed in this policy?",
+      "answer": "The agent or broker listed in this policy is Helix Insurance Group, located at 101 Tiki Drive, Suite 202, Galveston, TX 77554. You can contact them at (409) 877-1687 or via email at service@helixinsurancegroup.com.",
+      "title": "Agent or Broker Information",
+      "reference_page": "1",
+      "text_reference": "Producer: Call your Insurance Representative: BRADLEY DONAHOO W30503N (409) 877-1687 HELIX INSURANCE GROUP 101 TIKI DRIVE, SUITE 202 GALVESTON, TX 77554 service@helixinsurancegroup.com",
+      "policy_details": "Helix Insurance Group is the designated producer for this policy, serving as the intermediary between the insured and the insurer for any questions or policy management needs.",
+      "policy_reference_points": [
+        "1"
+      ]
+    }
+  ],
+  "total_questions": 3,
+  "generated_date": "2025-09-19T17:00:16.559869"
+}
