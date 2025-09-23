@@ -220,7 +220,7 @@
         }
         
         .details-section { 
-            margin-bottom: 1.5rem; 
+            padding-bottom: 2rem; 
         }
         
         .details-heading {
@@ -242,7 +242,7 @@
         }
         
         .details-text {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             line-height: 1.625;
             color: #374151;
             /* margin-bottom: 1.5rem; */
@@ -254,25 +254,19 @@
             font-size: 1.2rem;
             margin-top: 0.5rem;
             padding-left: 1rem;
+            padding-right: 1rem;
+            /* display: block; */
         }
-        
+
         .reference-label {
-            /* width: 7rem;
-            flex-shrink: 0;
-            font-weight: 400; */
             color: #374151;
-            /* display: inline-block; */
-            padding-left: 1rem;
+            padding-left: 10px;
         }
-        
+
         .reference-value {
             color: #1F2937;
             border: 1px solid #E5E7EB;
             background: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.375rem;
-            padding-left: 1rem;
-            /* display: inline-block; */
         }
         
         .reference-section {
@@ -409,10 +403,85 @@
                         <p style="font-size: 1.5rem; margin-bottom: 2rem;">{{ qa_item.answer|default("Answer not available") }}</p>
                         
                         {% if qa_item.policy_details or qa_item.text_reference or qa_item.policy_reference_points %}
-                        <div class="details-container">
+                        <table style="width: 100%; border-left: solid 4px #F97316; border-top: solid 1px #efeff0; border-right: solid 1px #efeff0; border-bottom: solid 1px #efeff0; margin-top: 1.5rem;">
+                            <tr style="height: 50px;"><td>&nbsp;</td></tr>
+                            <tr>
+                                <td>
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 20px;"></td>
+                                            <td style="padding-right: 30px;">
+                                                {% if qa_item.policy_details %}
+                                                <table>
+                                                    <tr class="details-heading">
+                                                        <td>
+                                                            <span class="details-icon" style="color: #F97316; font-size: 1.1rem;">●</span>
+                                                            Policy Details
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table style="border: 1px solid #ecedee; background-color: #F9FAFB;">
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="details-text">
+                                                                            {{ qa_item.policy_details }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                {% if qa_item.text_reference %}
+                                                                <tr>
+                                                                    <td class="reference-label">Reference:</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="padding-left: 18px; padding-right: 10px;">
+                                                                        <table>
+                                                                            <tr class="reference-value">
+                                                                                <td style="padding-top: 5px; padding-left: 5px;">
+                                                                                    {{ qa_item.text_reference }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr><td>&nbsp;</td></tr>
+                                                                {% endif %}
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                {% endif %}
+
+                                                {% if qa_item.policy_reference_points %}
+                                                <div style="border-bottom: solid 1px #cacbcc; width: 100%;">&nbsp;</div>
+                                                <div class="reference-section" style="border-top: 1px solid #E5E7EB; padding-top: 1.25rem; margin-top: 1.5rem;">
+                                                    <div class="reference-heading">
+                                                        <span class="reference-icon" style="color: #3B82F6; font-size: 1.1rem;">▪</span>
+                                                        Policy Reference Points
+                                                    </div>
+                                                    <div class="reference-box" style="background-color: #EFF6FF; padding: 1rem; border-radius: 0.5rem;">
+                                                        {% for point in qa_item.policy_reference_points %}
+                                                        <span class="reference-tag" style="display: inline-block; background: white; border: 1px solid #BFDBFE; border-radius: 9999px; padding: 0.375rem 0.75rem; margin: 0.25rem; font-size: 0.75rem; font-weight: 500; color: #1E40AF;">
+                                                            Page {{ point }}
+                                                        </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;"><td>&nbsp;</td></tr>
+                        </table>
+                        <!-- ESTO COMENTANDO ES LO QUE ESTA DENTRO DE LA TABLA, 
+                            CON DIV NO SE PUEDEN APLICAR BIEN LOS ESTILOS, ESPACIADOS Y MARGENES -->
+                        <!-- 
+                        <div class="details-container" style="border-left: solid 2px red; margin-top: 50px;">
                             <div class="details-inner">
                                 {% if qa_item.policy_details %}
-                                <div class="details-section">
+                                <div style="padding-bottom: 3rem;">
                                     <div class="details-heading">
                                         <span class="details-icon" style="color: #F97316; font-size: 1.1rem;">●</span>
                                         Policy Details
@@ -424,7 +493,7 @@
                                         {% if qa_item.text_reference %}
                                         <div class="reference-row">
                                             <div class="reference-label">Reference:</div>
-                                            <div class="reference-value" style="background: white; padding: 0.25rem 0.75rem; border: 1px solid #E5E7EB; border-radius: 0.375rem;">
+                                            <div class="reference-value">
                                                 {{ qa_item.text_reference }}
                                             </div>
                                         </div>
@@ -450,7 +519,7 @@
                                 </div>
                                 {% endif %}
                             </div>
-                        </div>
+                        </div> -->
                         {% endif %}
                     </div>
                 </div>
