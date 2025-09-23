@@ -94,19 +94,34 @@
         }
         
         .info-label {
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 9px;
+            font-weight: bold;
             color: #6B7280;
         }
         
         .info-text {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.5rem;
+            font-weight: 400;
             color: #D97706;
             margin-top: 0.25rem;
             display: block;
         }
-        
+
+        /* --- ICON STYLES --- */
+        .icon-calendar {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .icon-property {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
         .property-image {
             max-height: 126px;
             max-width: 202px;
@@ -123,19 +138,20 @@
         
         /* --- DIVIDER --- */
         .divider {
-            margin-top: 1.5rem;
+            /* margin-top: 1.5rem;
             margin-bottom: 14px;
-            height: 0.9px;
+            height: 0.9px; */
             width: 100%;
-            background-color: #D1D5DB;
+            /* background-color: #525354; */
+            border-bottom: solid 3px #b6b7b8;
         }
         
         /* --- REPORT TITLE --- */
         .report-title {
-            font-size: 1.125rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #374151;
-            padding: 1.5rem 1rem 1rem;
+            padding: 2rem 0 1rem;
         }
         
         /* --- WATERMARK --- */
@@ -160,20 +176,23 @@
         }
         
         .question-header {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
         
         .question-arrow {
-            height: 1rem;
-            width: 1rem;
-            margin-right: 0.5rem;
+            /* height: 1.2rem;
+            width: 1.2rem; */
+            margin-right: 1rem;
             display: inline-block;
             vertical-align: middle;
+            color: #F97316; 
+            font-size: 1.5rem; 
+            font-weight: 500;
         }
         
         .question-text {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 1.125rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #1F2937;
             display: inline;
@@ -324,14 +343,17 @@
             <table class="info-table">
                 <tr>
                     <td style="vertical-align: top;">
-                        <div style="margin-bottom: 13px;">
+                        <div style="margin-bottom: 24px;">
                             <p class="info-label">DATE OF SUBMISSION</p>
-                            <p class="info-text">{{ policy_report.formatted_date|default("Sep 18, 2025, 19:29 PM") }}</p>
+                            <p class="info-text">
+                                <img src="calendar.png" width="20" height="20" class="icon-calendar" alt="calendar" title="Calendar" />&nbsp;&nbsp;&nbsp;{{ policy_report.formatted_date|default("Sep 18, 2025, 19:29 PM") }}
+                            </p>
                         </div>
+                        <div>&nbsp;</div>
                         <div>
                             <p class="info-label">PROPERTY ADDRESS</p>
                             <p class="info-text">
-                                {{ policy_report.home_value_address|default("Property Address Not Available") }}
+                                <img src="property.png" width="20" height="20" class="icon-property" alt="Property" title="Property" />&nbsp;&nbsp;&nbsp;{{ policy_report.home_value_address|default("Property Address Not Available") }}
                             </p>
                         </div>
                     </td>
@@ -346,8 +368,10 @@
                         </div>
                         {% elif policy_report.home_value_img %}
                         <div>
-                            <div class="property-image" style="padding: 1rem; text-align: center; background-color: #F3F4F6; border-radius: 0.5rem; min-height: 100px;">
-                                <p style="color: #6B7280; font-size: 0.875rem; padding: 2rem;">Property Image</p>
+                            <div class="property-image" style="padding: 1rem; text-align: center;">
+                                <img src="sin_imagen.jpg" 
+                                     alt="Property Image" 
+                                     style="max-width: 50%; max-height: 100px; border-radius: 0.5rem;" />
                             </div>
                         </div>
                         <p class="property-caption">
@@ -359,7 +383,7 @@
             </table>
             
             <!-- DIVIDER -->
-            <div class="divider"></div>
+            <div class="divider">&nbsp;</div>
             
             <!-- REPORT TITLE -->
             <p class="report-title">Home Insurance Policy Report</p>
@@ -372,11 +396,11 @@
             <div class="content-area">
                 <div class="question-container keep-together">
                     <div class="question-header">
-                        <span class="question-arrow" style="color: #F97316; font-size: 1.2rem; margin-right: 0.5rem;">►</span>
-                        <div class="question-text">{{ qa_item.question|default("Question not available") }}</div>
+                        <span class="question-arrow" >&#10095;</span>
+                        <div class="question-text">&nbsp;&nbsp;{{ qa_item.question|default("Question not available") }}</div>
                     </div>
                     <div class="markdown-content">
-                        <p>{{ qa_item.answer|default("Answer not available") }}</p>
+                        <p style="font-size: 1.5rem; margin-bottom: 2rem;">{{ qa_item.answer|default("Answer not available") }}</p>
                         
                         {% if qa_item.policy_details or qa_item.text_reference or qa_item.policy_reference_points %}
                         <div class="details-container">
