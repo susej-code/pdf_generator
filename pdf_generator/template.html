@@ -28,12 +28,14 @@
         .page-container {
             background-color: white;
             position: relative;
-            border: 1px solid #D1D5DB;
             padding: 1.5rem;
-            page-break-after: always;
-            min-height: 9in;
         }
-        
+
+        .page-container.first-page {
+            border: 1px solid #D1D5DB;
+            page-break-after: avoid;
+        }
+
         .page-container:last-child {
             page-break-after: auto;
         }
@@ -326,10 +328,9 @@
 </head>
 <body>
     {% if questions_answers %}
-        {% for qa_item in questions_answers %}
-        <div class="page-container">
-            {% if loop.first %}
-            <!-- HEADER (First page only) -->
+        <!-- SINGLE CONTINUOUS DOCUMENT CONTAINER -->
+        <div class="page-container first-page">
+            <!-- HEADER -->
             <div class="logo-container">
                 <span class="logo-text">
                     <img src="cri-logo.png" width="45" height="37" alt="Go Clarifi" title="Go Clarifi" />
@@ -386,14 +387,14 @@
             
             <!-- REPORT TITLE -->
             <p class="report-title">Home Insurance Policy Report</p>
-            {% endif %}
-            
+
             <!-- WATERMARK -->
             <div class="watermark"></div>
-            
-            <!-- CONTENT AREA -->
+
+            <!-- ALL QUESTIONS - CONTINUOUS FLOW -->
             <div class="content-area">
-                <div class="question-container keep-together">
+                {% for qa_item in questions_answers %}
+                <div class="question-container" style="page-break-inside: avoid;">
                     <div class="question-header">
                         <span class="question-arrow" >&#8250;</span>
                         <div class="question-text">&nbsp;&nbsp;{{ qa_item.question|default("Question not available") }}</div>
@@ -459,9 +460,10 @@
                                                         &nbsp;&nbsp;Policy Reference Points
                                                     </div>
                                                     <div class="reference-box" style=" padding: 1rem; border-radius: 0.5rem;">
+                                                        {% set outer_loop = loop %}
                                                         {% for point in qa_item.policy_reference_points %}
                                                         <span class="reference-tag" style="display: inline-block; background-color: #EFF6FF; padding: 0.75rem 0.75rem; margin: 0.25rem; font-size: 1rem; font-weight: 500; color: #1E40AF;">
-                                                            {{ point }}
+                                                            {{ outer_loop.index }}
                                                         </span>
                                                         {% endfor %}
                                                     </div>
@@ -477,14 +479,20 @@
                         {% endif %}
                     </div>
                 </div>
+
+                {% if not loop.last %}
+                <!-- SEPARADOR ENTRE SECCIONES -->
+                <div >&nbsp;</div>
+                {% endif %}
+
+                {% endfor %}
             </div>
-            
+
             <!-- PAGE FOOTER -->
             <div class="page-footer">
-                <span class="page-number">{{ loop.index }}</span>
+                <span class="page-number">1</span>
             </div>
         </div>
-        {% endfor %}
     {% else %}
         <!-- No data page -->
         <div class="page-container">
