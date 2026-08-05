@@ -2,8 +2,32 @@
 
 | | |
 |---|---|
-| **Estado** | **Código completo, PR abierto sin mergear** (2026-08-05). Falta el rollout observe-only → enforce. |
-| **Rama** | `fix/ssrf-outbound-guard-1698` → PR base `development`, 7 commits |
+| **Estado** | **Mergeado a `development` y desplegado en dev en observe-only** (2026-08-05). Falta: observar logs → promover a `main` → enforce. |
+| **PR** | [main_service#2113](https://github.com/aspe-ai/main_service/pull/2113), 11 commits, mergeado |
+
+## Verificación empírica en dev (2026-08-05)
+
+Probado **dentro del pod** (`main-service-dev`, Python 3.10.11), contra el DNS real del cluster:
+
+| Caso | Resultado |
+|---|---|
+| `http://hasura-dev.aspe-dev/` → resuelve a `10.43.186.30` | **BLOQUEADA** (`blocked_resolved_ip`) ← **el gap, cerrado** |
+| `http://10.43.135.179/` (IP literal) | BLOQUEADA (`blocked_ip`) |
+| `http://169.254.169.254/latest/meta-data/` | BLOQUEADA (`blocked_ip`) |
+| `http://example.com:8080/` | BLOQUEADA (`blocked_port`) |
+| `file:///etc/passwd` | BLOQUEADA (`invalid_scheme`) |
+| `https://example.com/` | **PERMITIDA**, pin=172.66.147.243 ← la regresión que no se puede romper |
+
+El primero es la prueba que importa: hostname normal, sin IP literal, resuelto por el DNS del cluster.
+Antes de este trabajo pasaba entero.
+
+> Ojo con un falso positivo al probar: `*.svc.cluster.local` se bloquea por `blocked_hostname`
+> (la regla `.local`) **antes** de resolver DNS, así que no sirve para verificar el chequeo de DNS.
+> Usar `hasura-dev.aspe-dev`, que sí llega a la resolución.
+
+**Al desplegar hubo 6 restarts** con `TooManyConnectionsError`. **No es de este cambio:** es el techo de
+conexiones de dev durante el solapamiento de pods del rollout (ver la nota de infra sobre
+`max_connections=100`). Se estabilizó solo al terminar el pod viejo.
 
 > **El alcance creció durante la ejecución.** El plan original cubría 4 sinks; un barrido exhaustivo
 > encontró **12**, varios peores que los documentados (ver el inventario en el doc del hallazgo). Se
