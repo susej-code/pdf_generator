@@ -1,0 +1,159 @@
+# pgpool-II de prod (ns aspe). Exportado del cluster el 16-oct-2026; antes no estaba en git.
+# nodeSelector us-dallas: sin él, un pod cayó en california-01 (+96 ms por consulta).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pgpool
+  name: pgpool
+  namespace: aspe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pgpool
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pgpool
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: postgresql-prod-superuser
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgresql-prod-superuser
+        image: cagriekin/pgpool:4.7.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 9999
+          timeoutSeconds: 5
+        name: pgpool
+        ports:
+        - containerPort: 9999
+          name: pgpool
+          protocol: TCP
+        - containerPort: 9898
+          name: pcp
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 9999
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: "2"
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/local/etc/pgpool.conf
+          name: pgpool-config
+          readOnly: true
+          subPath: pgpool.conf
+        - mountPath: /usr/local/etc/pool_hba.conf
+          name: pgpool-config
+          readOnly: true
+          subPath: pool_hba.conf
+        - mountPath: /usr/local/etc/pcp.conf
+          name: pgpool-config
+          readOnly: true
+          subPath: pcp.conf
+        - mountPath: /etc/pgpool/certs
+          name: postgresql-server-certs
+          readOnly: true
+        - mountPath: /etc/pgpool/ca
+          name: postgresql-ca-cert
+          readOnly: true
+        - mountPath: /var/run/pgpool
+          name: run
+        - mountPath: /etc/pgpool-passwd
+          name: pool-passwd
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        topology.kubernetes.io/region: us-dallas
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: pgpool-config
+        name: pgpool-config
+      - name: postgresql-server-certs
+        secret:
+          defaultMode: 384
+          items:
+          - key: tls.crt
+            mode: 384
+            path: tls.crt
+          - key: tls.key
+            mode: 384
+            path: tls.key
+          secretName: postgresql-prod-server
+      - name: postgresql-ca-cert
+        secret:
+          defaultMode: 420
+          items:
+          - key: ca.crt
+            path: ca.crt
+          secretName: postgresql-prod-ca
+      - emptyDir: {}
+        name: run
+      - name: pool-passwd
+        secret:
+          defaultMode: 420
+          items:
+          - key: pool_passwd
+            mode: 384
+            path: pool_passwd
+          secretName: pgpool-passwd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pgpool
+  name: pgpool
+  namespace: aspe
+spec:
+  ports:
+  - name: postgresql
+    port: 5432
+    protocol: TCP
+    targetPort: 9999
+  - name: pcp
+    port: 9898
+    protocol: TCP
+    targetPort: 9898
+  selector:
+    app: pgpool
+  type: ClusterIP
